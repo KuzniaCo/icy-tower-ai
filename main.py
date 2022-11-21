@@ -74,22 +74,25 @@ while carryOn:
         # --- Drawing code should go here
         # First, clear the screen to white.
     # The you can draw different shapes and lines or add text to your background stage.
-    if (playerPosY < 120):
+    if (playerMoveVector[1]!=0):
         offset = offset + playerSpeed
         offset = offset % 40
-        playerPosY=playerPosY+playerSpeed/2
         #print(offset)
+    if(playerPosY<=0):
+        playerPosY=playerPosY+playerSpeed
+        for i in platforms:
+            i[1]=i[1]+playerSpeed
         
     #render left walls and background and right walls
     for i in range(0,45):
-        if(playerPosY<120):
+        if(playerMoveVector[1]<0):
             screen.blit(backgroundSlice, (0, -600 + i * 40+offset))
             screen.blit(leftWallImg, (0, -600 + i * 40+offset))
             screen.blit(rightWallImg, (size[0]-40, -600 + i * 40 + offset))
         else:
-            screen.blit(backgroundSlice, (0, -600 + i * 40))
-            screen.blit(leftWallImg, (0, -600 + i * 40))
-            screen.blit(rightWallImg, (size[0]-40, -600 + i * 40))
+            screen.blit(backgroundSlice, (0, -600 + i * 40-offset))
+            screen.blit(leftWallImg, (0, -600 + i * 40-offset))
+            screen.blit(rightWallImg, (size[0]-40, -600 + i * 40-offset))
     playerPosY+=playerMoveVector[1]
     playerPosX+=playerMoveVector[0]
     screen.blit(playerStandingAnim[0],(playerPosX,playerPosY))
