@@ -28,11 +28,11 @@ def generatePlatform(leftBounds,rightBounds,heightOfGameWindow):
     numberOfPlatformSegments=random.randint(2,7)#I made it so platform has maximum 7 segments
     return [posX,posY,numberOfPlatformSegments]
 platforms=[]#[[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments], ... ]
-def displayPlatform(screen,platform,offset,screenSizeY):
-    screen.blit(leftPlatformSegmentImg,(platform[0],platform[1]+offset))
+def displayPlatform(screen,platform):
+    screen.blit(leftPlatformSegmentImg,(platform[0],platform[1]))
     for i in range(1,platform[2]-1):
-        screen.blit(middlePlatformSegmentImg, (platform[0] + i * 40, platform[1] + offset))
-    screen.blit(rightPlatformSegmentImg,(platform[0]+platform[2]*40-40,platform[1]+offset))
+        screen.blit(middlePlatformSegmentImg, (platform[0] + i * 40, platform[1]))
+    screen.blit(rightPlatformSegmentImg,(platform[0]+platform[2]*40-40,platform[1]))
 
 # Open a new window
 size = (800, 600)
@@ -94,10 +94,9 @@ while carryOn:
     playerPosX+=playerMoveVector[0]
     screen.blit(playerStandingAnim[0],(playerPosX,playerPosY))
     for i in platforms:
-        if(playerMoveVector[1]==-1):
-            i[1]=i[1]+playerSpeed
-            print(i[1])
-        displayPlatform(screen,i,offset,size[1])
+        i[1] = i[1] - playerMoveVector[1]
+        displayPlatform(screen,i)
+        print(playerMoveVector)
 
 
 
