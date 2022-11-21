@@ -14,7 +14,7 @@ kuzniaLogoImg = pygame.image.load('kuzniaLogo.png')
 playerStandingAnim=[pygame.image.load("./PlayerStanding/1.png"),pygame.image.load("./PlayerStanding/2.png")]
 pygame.init()
 
-
+travelledDistance=0
 playerPosX=400
 playerPosY=150
 playerSpeed=3
@@ -22,10 +22,11 @@ offset=0
 playerMoveVector=[0,0]
 
 def generatePlatform(leftBounds,rightBounds,heightOfGameWindow):
-    posX=random.randint(leftBounds-40,rightBounds+40)#40 is player width, so -40 makes minimal gap from wall 2x player width
-    posX=posX%40
+    numberOfPlatformSegments = random.randint(2, 7)  # I made it so platform has maximum 7 segments
+    posX=random.randint(leftBounds+80,rightBounds-numberOfPlatformSegments*40)#40 is player width, so -40 makes minimal gap from wall 2x player width
+    posX=posX-posX%40
     posY=-20#heightOfGameWindow is bottom, platform height is 20
-    numberOfPlatformSegments=random.randint(2,7)#I made it so platform has maximum 7 segments
+
     return [posX,posY,numberOfPlatformSegments]
 platforms=[]#[[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments], ... ]
 def displayPlatform(screen,platform):
@@ -45,7 +46,7 @@ carryOn = True
 # The clock will be used to control how fast the screen updates
 clock = pygame.time.Clock()
 
-platforms.append(generatePlatform(40,size[0]-40,size[1]))
+platforms.append(generatePlatform(60,size[0],size[1]))
 # -------- Main Program Loop -----------
 while carryOn:
     # --- Main event loop
@@ -79,6 +80,8 @@ while carryOn:
         offset = offset % 40
         #print(offset)
     if(playerPosY<=0):
+        travelledDistance=travelledDistance+playerSpeed
+        print("travelledDistance: "+str(travelledDistance))
         playerPosY=playerPosY+playerSpeed
         for i in platforms:
             i[1]=i[1]+playerSpeed
@@ -99,7 +102,7 @@ while carryOn:
     for i in platforms:
         i[1] = i[1] - playerMoveVector[1]
         displayPlatform(screen,i)
-        print(playerMoveVector)
+        #print(playerMoveVector)
 
 
 
