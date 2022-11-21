@@ -8,7 +8,9 @@ pygame.init()
 
 playerPosX=400
 playerPosY=150
-playerSpeed=1
+playerSpeed=3
+offset=0
+playerMoveVector=[0,0]
 
 platformColliders=[]
 
@@ -32,13 +34,17 @@ while carryOn:
             carryOn = False  # Flag that we are done so we can exit the while loop
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            playerPosX -= playerSpeed
+            playerMoveVector[0]=-playerSpeed
         if keys[pygame.K_RIGHT]:
-            playerPosX += playerSpeed
+            playerMoveVector[0]=playerSpeed
         if keys[pygame.K_UP]:
-            playerPosY -= playerSpeed
+            playerMoveVector[1]=-playerSpeed
         if keys[pygame.K_DOWN]:
-            playerPosY += playerSpeed
+            playerMoveVector[1]=playerSpeed
+        if keys[pygame.K_RIGHT]==False and keys[pygame.K_LEFT]==False:
+            playerMoveVector[0] = 0
+        if keys[pygame.K_DOWN]==False and keys[pygame.K_UP]==False:
+            playerMoveVector[1] = 0
 
 
 
@@ -47,9 +53,19 @@ while carryOn:
         # --- Drawing code should go here
         # First, clear the screen to white.
     # The you can draw different shapes and lines or add text to your background stage.
+    if (playerPosY < 120):
+        offset = offset + playerSpeed
+        offset = offset % 40
+        print(offset)
     for i in range(0,45):
-        screen.blit(backgroundSlice,(0,-600+i*40+playerPosY%40))
-        screen.blit(wallImg,(0,-600+i*40+playerPosY%40))
+        if(playerPosY<120):
+            screen.blit(backgroundSlice, (0, -600 + i * 40+offset))
+            screen.blit(wallImg, (0, -600 + i * 40+offset))
+        else:
+            screen.blit(backgroundSlice, (0, -600 + i * 40))
+            screen.blit(wallImg, (0, -600 + i * 40))
+    playerPosY+=playerMoveVector[1]
+    playerPosX+=playerMoveVector[0]
     screen.blit(playerStandingAnim[0],(playerPosX,playerPosY))
 
 
