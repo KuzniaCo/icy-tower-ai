@@ -79,12 +79,12 @@ while carryOn:
         offset = offset + playerSpeed
         offset = offset % 40
         #print(offset)
-    if(playerPosY<=0):
+    if(playerPosY<=40):#need to move camera smoothly, need to make a boolean flag here and transition all platforms nicely with player
         travelledDistance=travelledDistance+playerSpeed
         print("travelledDistance: "+str(travelledDistance))
-        playerPosY=playerPosY+playerSpeed
+        playerPosY=playerPosY-playerMoveVector[1]
         for i in platforms:
-            i[1]=i[1]+playerSpeed
+            i[1]=i[1]-playerMoveVector[1]
         
     #render left walls and background and right walls
     for i in range(0,45):
