@@ -15,8 +15,8 @@ playerStandingAnim=[pygame.image.load("./PlayerStanding/1.png"),pygame.image.loa
 pygame.init()
 
 travelledDistance=0
-playerPosX=400
-playerPosY=150
+playerPosX=60
+playerPosY=540
 playerSpeed=3
 offset=0
 playerMoveVector=[0,0]
@@ -75,16 +75,17 @@ while carryOn:
         # --- Drawing code should go here
         # First, clear the screen to white.
     # The you can draw different shapes and lines or add text to your background stage.
+    travelledDistance = travelledDistance - playerMoveVector[1]
+    print("travelledDistance: " + str(travelledDistance))
     if (playerMoveVector[1]!=0):
         offset = offset + playerSpeed
         offset = offset % 40
         #print(offset)
     if(playerPosY<=40):#need to move camera smoothly, need to make a boolean flag here and transition all platforms nicely with player
-        travelledDistance=travelledDistance+playerSpeed
-        print("travelledDistance: "+str(travelledDistance))
-        playerPosY=playerPosY-playerMoveVector[1]
-        for i in platforms:
-            i[1]=i[1]-playerMoveVector[1]
+        if(playerMoveVector[1]<0):
+            playerPosY = playerPosY - 2 * playerMoveVector[1]
+        #for i in platforms:
+        #    i[1]=i[1]-playerMoveVector[1]
         
     #render left walls and background and right walls
     for i in range(0,45):
