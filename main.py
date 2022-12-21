@@ -1,7 +1,7 @@
 # Import the pygame library and initialise the game engine
 import pygame
 import random
-
+import math
 
 leftPlatformSegmentImg=pygame.image.load('Images/platformLeft.png')
 middlePlatformSegmentImg=pygame.image.load('Images/platformMiddle.png')
@@ -28,16 +28,17 @@ def generatePlatform(leftBounds,rightBounds,heightOfGameWindow):
     posY=-20#heightOfGameWindow is bottom, platform height is 20
 
     return [posX,posY,numberOfPlatformSegments]
-platforms=[]#[[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments], ... ]
 def displayPlatform(screen,platform):
     screen.blit(leftPlatformSegmentImg,(platform[0],platform[1]))
     for i in range(1,platform[2]-1):
         screen.blit(middlePlatformSegmentImg, (platform[0] + i * 40, platform[1]))
     screen.blit(rightPlatformSegmentImg,(platform[0]+platform[2]*40-40,platform[1]))
+platforms=[]#[[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments],[posX,posY,numberOfPlatformSegments], ... ]
+doesPlayerCollideWithPlatforms=False
 
 # Open a new window
-size = (800, 600)
-screen = pygame.display.set_mode(size)
+sizeOfWindow = (800, 600)
+screen = pygame.display.set_mode(sizeOfWindow)
 pygame.display.set_caption("KuzniaTower")
 
 # The loop will carry on until the user exits the game (e.g. clicks the close button).
@@ -46,7 +47,7 @@ carryOn = True
 # The clock will be used to control how fast the screen updates
 clock = pygame.time.Clock()
 
-platforms.append(generatePlatform(60,size[0],size[1]))
+platforms.append(generatePlatform(80,sizeOfWindow[0],sizeOfWindow[1]))
 # -------- Main Program Loop -----------
 while carryOn:
     # --- Main event loop
@@ -92,22 +93,41 @@ while carryOn:
         if(playerMoveVector[1]<0):
             screen.blit(backgroundSlice, (0, -600 + i * 40+offset))
             screen.blit(leftWallImg, (0, -600 + i * 40+offset))
-            screen.blit(rightWallImg, (size[0]-40, -600 + i * 40 + offset))
+            screen.blit(rightWallImg, (sizeOfWindow[0]-40, -600 + i * 40 + offset))
         else:
             screen.blit(backgroundSlice, (0, -600 + i * 40-offset))
             screen.blit(leftWallImg, (0, -600 + i * 40-offset))
-            screen.blit(rightWallImg, (size[0]-40, -600 + i * 40-offset))
+            screen.blit(rightWallImg, (sizeOfWindow[0]-40, -600 + i * 40-offset))
+    # display platforms and check for collision with player
+    doesPlayerCollideWithPlatforms=False
+    for i in platforms:
+        print(playerPosX,playerPosY)
+        print(i[0],i[1])
+        #y collision
+        if((abs(playerPosY+playerMoveVector[1]-i[1])<=20 or abs(playerPosY+playerMoveVector[1]+40-i[1])<=20) and
+         playerPosX+playerMoveVector[0]<=i[0]+i[2]*40 and playerPosX+playerMoveVector[0]>=i[0]-30):
+            playerPosX=playerPosX-playerMoveVector[0]
+            playerPosY=playerPosY-2*playerMoveVector[1]
+            doesPlayerCollideWithPlatforms=True
+        #x collision
+        i[1] = i[1] - playerMoveVector[1]
+        displayPlatform(screen, i)
+        #if (playerPosX + playerMoveVector[0] - i[0] <= i[2]*40):
+        #    playerMoveVector[0] = 0
+        #    doesPlayerCollideWithPlatforms = True
+        # print(playerMoveVector)
 
+    #check player collision with bounds and move player
     LEFT_BOUNDS=40
     RIGHT_BOUNDS=730
     if(playerPosX+playerMoveVector[0]>LEFT_BOUNDS and playerPosX+playerMoveVector[0]<RIGHT_BOUNDS):
         playerPosY+=playerMoveVector[1]
         playerPosX+=playerMoveVector[0]
+
+    #display player on his coordinated with his image
     screen.blit(playerStandingAnim[0],(playerPosX,playerPosY))
-    for i in platforms:
-        i[1] = i[1] - playerMoveVector[1]
-        displayPlatform(screen,i)
-        #print(playerMoveVector)
+
+
 
 
 
