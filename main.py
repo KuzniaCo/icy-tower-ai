@@ -3,14 +3,14 @@ import pygame
 import random
 
 
-leftPlatformSegmentImg=pygame.image.load('platformLeft.png')
-middlePlatformSegmentImg=pygame.image.load('platformMiddle.png')
-rightPlatformSegmentImg=pygame.image.load('platformRight.png')
+leftPlatformSegmentImg=pygame.image.load('Images/platformLeft.png')
+middlePlatformSegmentImg=pygame.image.load('Images/platformMiddle.png')
+rightPlatformSegmentImg=pygame.image.load('Images/platformRight.png')
 
-leftWallImg = pygame.image.load('leftWall.png')
-rightWallImg = pygame.image.load('rightWall.png')
-backgroundSlice = pygame.image.load('backgroundSlice.png')
-kuzniaLogoImg = pygame.image.load('kuzniaLogo.png')
+leftWallImg = pygame.image.load('Images/leftWall.png')
+rightWallImg = pygame.image.load('Images/rightWall.png')
+backgroundSlice = pygame.image.load('Images/backgroundSlice.png')
+kuzniaLogoImg = pygame.image.load('Images/kuzniaLogo.png')
 playerStandingAnim=[pygame.image.load("./PlayerStanding/1.png"),pygame.image.load("./PlayerStanding/2.png")]
 pygame.init()
 
