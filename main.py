@@ -97,8 +97,12 @@ while carryOn:
             screen.blit(backgroundSlice, (0, -600 + i * 40-offset))
             screen.blit(leftWallImg, (0, -600 + i * 40-offset))
             screen.blit(rightWallImg, (size[0]-40, -600 + i * 40-offset))
-    playerPosY+=playerMoveVector[1]
-    playerPosX+=playerMoveVector[0]
+
+    LEFT_BOUNDS=40
+    RIGHT_BOUNDS=730
+    if(playerPosX+playerMoveVector[0]>LEFT_BOUNDS and playerPosX+playerMoveVector[0]<RIGHT_BOUNDS):
+        playerPosY+=playerMoveVector[1]
+        playerPosX+=playerMoveVector[0]
     screen.blit(playerStandingAnim[0],(playerPosX,playerPosY))
     for i in platforms:
         i[1] = i[1] - playerMoveVector[1]
